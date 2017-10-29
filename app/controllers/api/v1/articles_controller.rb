@@ -12,6 +12,11 @@ class Api::V1::ArticlesController < Api::V1::BaseController
     respond_with Article.destroy(params[:id])
   end
 
+  def show
+    article = Article.find(params["id"])
+    respond_with article, json: article
+  end
+
   def update
     article = Article.find(params["id"])
     article.update_attributes(article_params)

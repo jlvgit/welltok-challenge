@@ -34,16 +34,18 @@ class App extends React.Component {
       })
     }
 
-    getArticle (id) {
+    deleteArticle (id) {
         this.fetch(`api/v1/articles/${id}`)
-        .then(article => this.setState({article: article}))
-    }
+        method: 'DELETE'
+      }
 
   render() {
     const { articles } = this.state;
     return (
       <div>
         <SubmitForm />
+        <br />
+        <h2>All Articles </h2>
         <br />
         <ReactTable
           data={articles}
@@ -65,6 +67,12 @@ class App extends React.Component {
               Header: 'Tags',
               accessor: "tags",
               maxWidth: 150
+            },
+            {
+              id: "Id",
+              accessor: 'this.id',
+              maxWidth: 25,
+              onClick={deleteArticle(id)}
             }
           ]}
           defaultPageSize={10}

@@ -3,27 +3,62 @@ import React from 'react';
 class SubmitForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = {
+      title: '',
+      description: '',
+      author: '',
+      tags: '',
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
+  handleChange(e) {
+      const state = this.state
+      state[e.target.name] = e.target.value;
+      this.setState(state);
   }
 
-  handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
-    event.preventDefault();
+  handleSubmit(e) {
+    e.preventDefault();
+    const { title, description, author, tags } = this.state;
+
+    fetch('api/v1/articles', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: this.state.title,
+        description: this.state.description,
+        author: this.state.author,
+        tags: this.state.tags,
+      })
+    })
+    window.location.reload();
   }
 
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
+        <h4>Add new article: </h4>
         <label>
-          Add article: 
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
+          Title:
+          <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
+        </label>
+        <label>
+          Descripton:
+          <input type="text" name="description" value={this.state.description} onChange={this.handleChange} />
+        </label>
+        <label>
+          Author:
+          <input type="text" name="author" value={this.state.author} onChange={this.handleChange} />
+        </label>
+        <label>
+          Tags:
+          <input type="text" name="tags" value={this.state.tags} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Add" />
       </form>

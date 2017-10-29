@@ -7,6 +7,10 @@ import "./index.css";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 
+// Import close icon
+import Icon from 'react-icons-kit';
+import { cross } from 'react-icons-kit/icomoon/cross';
+
 class App extends React.Component {
     constructor () {
         super()
@@ -37,6 +41,7 @@ class App extends React.Component {
     deleteArticle (id) {
         this.fetch(`api/v1/articles/${id}`)
         method: 'DELETE'
+        window.location.reload();
       }
 
   render() {
@@ -61,7 +66,7 @@ class App extends React.Component {
             {
               Header: 'Author',
               accessor: "author",
-              maxWidth: 150
+              maxWidth: 125
             },
             {
               Header: 'Tags',
@@ -69,10 +74,8 @@ class App extends React.Component {
               maxWidth: 150
             },
             {
-              id: "Id",
-              accessor: 'this.id',
-              maxWidth: 25,
-              onClick={deleteArticle(id)}
+              maxWidth: 40,
+              Cell: <button onclick="this.deleteArticle"><Icon icon={cross} /></button>,
             }
           ]}
           defaultPageSize={10}

@@ -16,6 +16,7 @@ class App extends React.Component {
         super()
         this.state = {}
         this.getArticles = this.getArticles.bind(this)
+        this.deleteArticle = this.deleteArticle.bind(this)
     }
 
     componentDidMount () {
@@ -41,7 +42,6 @@ class App extends React.Component {
     deleteArticle (id) {
         this.fetch(`api/v1/articles/${id}`)
         method: 'DELETE'
-        window.location.reload();
       }
 
   render() {
@@ -54,6 +54,16 @@ class App extends React.Component {
         <br />
         <ReactTable
           data={articles}
+          getTdProps={(state, rowInfo, column, instance) => {
+          return {
+            onClick: (e, handleOriginal) => {
+              console.log('It was in this column:', column)
+              if (column.className === "deleteColumn"){
+                this.deleteArticle (column.Id);
+              }
+            }
+          }
+        }}
           columns={[
             {
               Header: "Title",
@@ -74,8 +84,10 @@ class App extends React.Component {
               maxWidth: 150
             },
             {
+              className: "deleteColumn",
+              Id: d => d.id,
               maxWidth: 40,
-              Cell: <button onclick="this.deleteArticle"><Icon icon={cross} /></button>,
+              Cell: <button><Icon icon={cross} /></button>
             }
           ]}
           defaultPageSize={10}

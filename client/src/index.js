@@ -40,10 +40,10 @@ class App extends React.Component {
     }
 
     deleteArticle (id) {
-        this.fetch(`api/v1/articles/${id}`)
-        method: 'DELETE'
-        window.location.reload();
-      }
+      return fetch(`api/v1/articles/${id}`, {
+        method: 'delete'
+      })
+    }
 
   render() {
     const { articles } = this.state;
@@ -58,9 +58,9 @@ class App extends React.Component {
           getTdProps={(state, rowInfo, column, instance) => {
           return {
             onClick: (e, handleOriginal) => {
-              console.log('It was in this column:', column)
+              console.log('It was in this column:', rowInfo)
               if (column.className === "deleteColumn"){
-                this.deleteArticle (column.Id);
+                this.deleteArticle (rowInfo.original.id);
               }
             }
           }
@@ -86,7 +86,6 @@ class App extends React.Component {
             },
             {
               className: "deleteColumn",
-              Id: d => d.id,
               maxWidth: 40,
               Cell: <button><Icon icon={cross} /></button>
             }

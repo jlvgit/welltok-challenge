@@ -22,7 +22,6 @@ class SubmitForm extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { title, description, author, tags } = this.state;
 
     fetch('api/v1/articles', {
       method: 'POST',

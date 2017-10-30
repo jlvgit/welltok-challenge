@@ -43,6 +43,8 @@ class App extends React.Component {
       return fetch(`api/v1/articles/${id}`, {
         method: 'delete'
       })
+      .then(this.getArticles(),
+      window.location.reload())
     }
 
   render() {
